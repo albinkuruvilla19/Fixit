@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static crispy_forms_tags %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+    <script>
+        function initAutocomplete() {
+            const addressInput = document.getElementById("id_address");
+            const autocomplete = new google.maps.places.Autocomplete(addressInput);
+
+            autocomplete.addListener("place_changed", function () {
+                const place = autocomplete.getPlace();
+                document.getElementById("id_latitude").value = place.geometry.location.lat();
+                document.getElementById("id_longitude").value = place.geometry.location.lng();
+            });
+        }
+    </script>
+</head>
+
+<body onload="initAutocomplete()" class="d-flex flex-column min-vh-100">
+    <section class="flex-grow-1 d-flex align-items-center" style="background-image: url({% static 'images/background-pattern.jpg' %});">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                
+                <div class="col-md-8 col-lg-6 col-xl-5">
+                    <form method="post" class="bg-white rounded shadow p-4">
+                        {% csrf_token %}
+                        <h3 class="mb-4 text-center">Service Provider Registration</h3>
+                        {{ form|crispy }}
+                        
+                        
+                        
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-block">Register</button>
+                            <p class="small fw-bold mt-2 pt-1 mb-0">Already have an account? 
+                                <a href="{% url 'service_provider_login' %}" class="link-danger">Login</a>
+                            </p>
+                            {% if error_message %}
+                            <p style="color: red; margin-top: 10px;">{{ error_message }}</p>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+{% endblock content %}

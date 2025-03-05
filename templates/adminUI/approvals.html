@@ -1,0 +1,44 @@
+{% extends "adminUI/admin_base.html" %}
+{% load static %}
+{% block admin %}
+
+<div class="container mt-5">
+    <h2>Pending Service Provider Approvals</h2>
+    
+    {% if need_approvals %}
+        <table class="table table-bordered mt-3">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Approve</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in need_approvals %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="user_id" value="{{ user.id }}">
+                            <button type="submit" class="btn btn-success">Approve</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No pending approvals.</p>
+    {% endif %}
+</div>
+
+
+
+
+
+
+
+{% endblock admin %}

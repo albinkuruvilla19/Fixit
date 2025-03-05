@@ -1,0 +1,725 @@
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap JS (required for modal functionality) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Provider Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2D5BFF;
+            --secondary: #6B7280;
+            --success: #00C853;
+            --warning: #FFC107;
+            --error: #FF3B30;
+            --surface: #FFFFFF;
+            --background: #F4F7FE;
+            --text-primary: #1A1F36;
+            --text-secondary: #6B7280;
+            --border-radius: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            min-height: 100vh;
+        }
+
+        /* Modern Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--surface);
+            padding: 2rem;
+            border-right: 1px solid rgba(0,0,0,0.1);
+            transition: var(--transition);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .profile-image {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            object-fit: cover;
+            background: var(--primary);
+        }
+
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+
+        .nav-section-title {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-item {
+            padding: 0.875rem 1rem;
+            border-radius: 12px;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: var(--transition);
+        }
+
+        .nav-item:hover {
+            background: rgba(45, 91, 255, 0.1);
+            color: var(--primary);
+        }
+
+        .nav-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem;
+            overflow-y: auto;
+            margin-left: 280px; /* Add this to ensure content doesn't overlap with sidebar */
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-bar {
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 12px;
+            width: 300px;
+            background: var(--surface);
+            transition: var(--transition);
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(45, 91, 255, 0.1);
+        }
+
+        /* Cards Grid */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            transition: var(--transition);
+            margin-bottom: 1.5rem;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .stats-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+
+        .stats-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Table Styles */
+        .table-container {
+            background: var(--surface);
+            border-radius: var(--border-radius);
+            overflow: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: var(--background);
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background: rgba(255, 193, 7, 0.1);
+            color: var(--warning);
+        }
+
+        .status-completed {
+            background: rgba(0, 200, 83, 0.1);
+            color: var(--success);
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1D4ED8;
+        }
+
+        .btn-secondary {
+            background: rgba(45, 91, 255, 0.1);
+            color: var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(45, 91, 255, 0.2);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #009940;
+        }
+
+        .btn-danger {
+            background: var(--error);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #D32F2F;
+        }
+
+        /* Charts */
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+
+        /* List Group */
+        .list-group {
+            list-style: none;
+            padding: 0;
+        }
+
+        .list-group-item {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .list-group-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-control, .form-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 12px;
+            background: var(--surface);
+            transition: var(--transition);
+        }
+
+        .form-control:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(45, 91, 255, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        
+            .sidebar {
+                left: -280px;
+                z-index: 1000;
+            }
+        
+            .sidebar.active {
+                left: 0;
+            }
+        
+            .main-content {
+                margin-left: 0;
+            }
+        
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div>
+                    <h3>{{user.username}}</h3>
+                    <p class="stats-label">Service Provider</p>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <h4 class="nav-section-title">Main Menu</h4>
+                <nav class="nav-menu">
+                    <a href="#" class="nav-item active">
+                        <i class="fas fa-home"></i>
+                        Dashboard
+                    </a>
+                    <a href="#appointments" class="nav-item">
+                        <i class="fas fa-calendar"></i>
+                        Appointments
+                    </a>
+                    
+                </nav>
+            </div>
+
+            <div class="nav-section">
+                <h4 class="nav-section-title">Account</h4>
+                <nav class="nav-menu">
+                    <a href="{% url "sp_edit_profile" %}" class="nav-item">
+                        <i class="fas fa-user"></i>
+                        Edit Profile
+                    </a>
+                    
+                    <a href="{% url 'logout' %}" class="nav-item">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </nav>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                <h1 class="header-title">Hello, {{user.username}}</h1>
+                <div class="header-actions">
+                    <input type="search" placeholder="Search appointments..." class="search-bar">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        New Booking
+                    </button>
+                </div>
+            </header>
+
+            <div class="grid-container">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Total Bookings</h3>
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stats-value">{{ total_bookings }}</div>
+                    <p class="stats-label">All-time bookings</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Total Earnings</h3>
+                        <i class="fas fa-rupee-sign"></i>
+                    </div>
+                    <div class="stats-value">Rs. {{ total_earnings }}</div>
+                    <p class="stats-label">All-time earnings</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Appointment Requests</h3>
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stats-value">{{ current_works|length }}</div>
+                    <p class="stats-label">Awaiting action</p>
+                </div>
+            </div>
+
+            <div class="grid-container">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Notifications</h3>
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    {% if notifications %}
+                        <ul class="list-group">
+                            {% for notification in notifications %}
+                                <li class="list-group-item">{{ notification }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="stats-label">No new notifications.</p>
+                    {% endif %}
+                </div>
+
+                {% comment %} <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Settings</h3>
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <a href="#" class="btn btn-secondary"><i class="fas fa-user-edit"></i> Update Profile</a>
+                        <a href="#" class="btn btn-secondary"><i class="fas fa-key"></i> Change Password</a>
+                        <a href="{% url 'logout' %}" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div> {% endcomment %}
+            </div>
+
+            <div class="grid-container" id="earnings">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Monthly Earnings</h3>
+                        <button class="btn btn-secondary btn-sm">View Details</button>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="earnings-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Bookings Trend</h3>
+                        <button class="btn btn-secondary btn-sm">View Details</button>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="bookings-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Services Offered</h3>
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <form method="POST" action="{% url 'update_services_offered' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="services">Select Services:</label>
+                        <select id="services" name="services" class="form-control" multiple>
+                            {% for service in all_services %}
+                                <option value="{{ service.id }}" {% if service in user.service_provider_profile.services_offered.all %}selected{% endif %}>{{ service.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Services</button>
+                </form>
+            </div>
+
+            
+
+            <div class="card" id="appointments">
+                <div class="card-header">
+                    <h3 class="card-title">Appointment Requests</h3>
+                    <button class="btn btn-secondary btn-sm">View All</button>
+                </div>
+                {% if current_works %}
+                    <ul class="list-group">
+                        {% for work in current_works %}
+                            <li class="list-group-item">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap;">
+                                    <div>
+                                        <h4 style="margin: 0 0 0.5rem 0;">Appointment with {{ work.customer.user.username }}</h4>
+                                        <p style="margin: 0 0 0.5rem 0;"><i class="fas fa-phone"></i> {{work.customer.phone}}</p>
+                                        <p style="margin: 0;"><i class="fas fa-calendar-alt"></i> {{ work.date }} <i class="fas fa-clock" style="margin-left: 1rem;"></i> {{ work.time }}</p>
+                                    </div>
+                                    <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                                        <a href="{% url 'accept_appointment' work.id %}" class="btn btn-success btn-sm">Accept</a>
+                                        <a href="{% url 'decline_appointment' work.id %}" class="btn btn-danger btn-sm">Decline</a>
+                                        <a href="{% url 'add_extra_pay' work.id %}" class="btn btn-secondary btn-sm">Add Extra Pay</a>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="stats-label">No pending works.</p>
+                {% endif %}
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Pending Works</h3>
+                    <button class="btn btn-secondary btn-sm">View All</button>
+                </div>
+                {% if going_works %}
+                    <ul class="list-group">
+                        {% for work in going_works %}
+                            <li class="list-group-item">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap;">
+                                    <div>
+                                        <h4 style="margin: 0 0 0.5rem 0;">Appointment with {{ work.customer.user.username }}</h4>
+                                        <p style="margin: 0 0 0.5rem 0;"><i class="fas fa-phone"></i> {{work.customer.phone}}</p>
+                                        <p style="margin: 0;"><i class="fas fa-calendar-alt"></i> {{ work.date }} <i class="fas fa-clock" style="margin-left: 1rem;"></i> {{ work.time }}</p>
+                                    </div>
+                                    <div style="margin-top: 0.5rem;">
+                                        <form method="POST" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="appointment_id" value="{{ work.id }}">
+                                            <select name="status" class="form-select">
+                                                <option value="Pending" {% if work.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                                <option value="In Progress" {% if work.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                                                <option value="Completed" {% if work.status == 'Completed' %}selected{% endif %}>Completed</option>
+                                                <option value="Cancelled" {% if work.status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+                                            </select>
+                                            <div style="display: flex; gap: 0.5rem;">
+                                                <button type="submit" class="btn btn-primary btn-sm">Update Status</button>
+                                                <a href="{% url 'add_extra_pay' work.id %}" class="btn btn-success btn-sm">Add Extra Pay</a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="stats-label">No ongoing works.</p>
+                {% endif %}
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Completed Bookings</h3>
+                    <button class="btn btn-secondary btn-sm">Export</button>
+                </div>
+                <div class="table-container">
+                    {% if completed_bookings %}
+                        <table id="completedBookingsTable" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Customer</th>
+                                    <th>Service Provider</th>
+                                    <th>Subcategory</th>
+                                    <th>Subsubcategory</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Completed At</th>
+                                    <th>Money Earned</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in completed_bookings %}
+                                    <tr>
+                                        <td>{{ booking.customer.user.username }}</td>
+                                        <td>{{ booking.service_provider.user.username }}</td>
+                                        <td>{{ booking.subcategory.name }}</td>
+                                        <td>{{ booking.subsubcategory.name }}</td>
+                                        <td>{{ booking.date }}</td>
+                                        <td>{{ booking.time }}</td>
+                                        <td>{{ booking.completed_at }}</td>
+                                        <td>{{ booking.price }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p class="stats-label">No completed bookings.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            $('#completedBookingsTable').DataTable();
+
+            // Initialize charts
+            const ctxEarnings = document.getElementById('earnings-chart').getContext('2d');
+            new Chart(ctxEarnings, {
+                type: 'bar',
+                data: {
+                    labels: {{ months|safe }},
+                    datasets: [{
+                        label: 'Earnings',
+                        data: {{ earnings|safe }},
+                        backgroundColor: 'rgba(45, 91, 255, 0.2)',
+                        borderColor: 'rgba(45, 91, 255, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        tooltip: {
+                            enabled: true
+                        }
+                    },
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeInOutBounce'
+                    }
+                }
+            });
+
+            const ctxBookings = document.getElementById('bookings-chart').getContext('2d');
+            new Chart(ctxBookings, {
+                type: 'bar',
+                data: {
+                    labels: {{ months|safe }},
+                    datasets: [{
+                        label: 'Bookings',
+                        data: {{ booking_counts|safe }},
+                        backgroundColor: 'rgba(0, 200, 83, 0.2)',
+                        borderColor: 'rgba(0, 200, 83, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Bookings'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Months'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

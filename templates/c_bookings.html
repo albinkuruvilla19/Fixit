@@ -1,0 +1,355 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .nav-pills {
+            transition: all 0.3s ease;
+            border-radius: 15px;
+            background: #f8f9fa;
+            padding: 0.5rem;
+        }
+        
+        .nav-link {
+            transition: all 0.3s ease;
+            border-radius: 12px !important;
+            padding: 1rem 1.5rem;
+            color: #4a5568;
+        }
+        
+        .nav-link.active {
+            background: #3b82f6 !important;
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .booking-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        .booking-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .title {
+            background: #3b82f6;
+            color: white;
+            padding: 1rem;
+            font-weight: 600;
+        }
+        
+        .details {
+            padding: 1.5rem;
+        }
+        
+        .badge {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 500;
+        }
+        
+        .badge-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .badge-in_progress {
+            background:rgb(199, 215, 236);
+            color: #1e40af;
+        }
+        
+        .badge-completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .badge-cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .btn {
+            transition: all 0.3s ease;
+            border-radius: 9999px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .price-tag {
+            background: #f3f4f6;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        
+        /* Staggered animation for cards */
+        {% for i in "123456789"|make_list %}
+        .booking-card:nth-child({{ i }}) {
+            animation-delay: {{ forloop.counter|add:"0.15" }}s;
+        }
+        {% endfor %}
+        
+        .empty-state {
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+
+
+        /* ratingstars */
+        /* From Uiverse.io by SelfMadeSystem */ 
+.rating {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 0.3rem;
+  --stroke: #666;
+  --fill: #ffc73a;
+}
+
+.rating input {
+  appearance: unset;
+}
+
+.rating label {
+  cursor: pointer;
+}
+
+.rating svg {
+  width: 2rem;
+  height: 2rem;
+  overflow: visible;
+  fill: transparent;
+  stroke: var(--stroke);
+  stroke-linejoin: bevel;
+  stroke-dasharray: 12;
+  animation: idle 4s linear infinite;
+  transition: stroke 0.2s, fill 0.5s;
+}
+
+@keyframes idle {
+  from {
+    stroke-dashoffset: 24;
+  }
+}
+
+.rating label:hover svg {
+  stroke: var(--fill);
+}
+
+.rating input:checked ~ label svg {
+  transition: 0s;
+  animation: idle 4s linear infinite, yippee 0.75s backwards;
+  fill: var(--fill);
+  stroke: var(--fill);
+  stroke-opacity: 0;
+  stroke-dasharray: 0;
+  stroke-linejoin: miter;
+  stroke-width: 8px;
+}
+
+@keyframes yippee {
+  0% {
+    transform: scale(1);
+    fill: var(--fill);
+    fill-opacity: 0;
+    stroke-opacity: 1;
+    stroke: var(--stroke);
+    stroke-dasharray: 10;
+    stroke-width: 1px;
+    stroke-linejoin: bevel;
+  }
+
+  30% {
+    transform: scale(0);
+    fill: var(--fill);
+    fill-opacity: 0;
+    stroke-opacity: 1;
+    stroke: var(--stroke);
+    stroke-dasharray: 10;
+    stroke-width: 1px;
+    stroke-linejoin: bevel;
+  }
+
+  30.1% {
+    stroke: var(--fill);
+    stroke-dasharray: 0;
+    stroke-linejoin: miter;
+    stroke-width: 8px;
+  }
+
+  60% {
+    transform: scale(1.2);
+    fill: var(--fill);
+  }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container-sm">
+        <!-- Modern Navigation Pills -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="nav nav-pills nav-fill">
+                    <a class="nav-link active" href="{% url "customer_bookings" %}">
+                        <i class="fas fa-calendar-check me-2"></i>My Bookings
+                    </a>
+                    <a class="nav-link" href="{% url "edit_profile" %}">
+                        <i class="fas fa-user-edit me-2"></i>Edit Profile
+                    </a>
+                    <a class="nav-link" href="{% url "change_password" %}">
+                        <i class="fas fa-key me-2"></i>Change Password
+                    </a>
+                    <a class="nav-link" href="{% url "edit_address" %}">
+                        <i class="fas fa-map-marker-alt me-2"></i>My Address
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bookings Content -->
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="mb-0">Hi, {{request.user.username}}</h2>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-filter me-2"></i>Filter
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">All Bookings</a></li>
+                            <li><a class="dropdown-item" href="#">Pending</a></li>
+                            <li><a class="dropdown-item" href="#">Completed</a></li>
+                            <li><a class="dropdown-item" href="#">Cancelled</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                {% if appointments %}
+                <div class="row">
+                    {% for appointment in appointments %}
+                    <div class="col-6">
+                        <div class="booking-card">
+                            <div class="title d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-calendar-check me-2"></i>
+                                    {{ appointment.subcategory }}{% if appointment.subsubcategory %} > {{ appointment.subsubcategory }}{% endif %}
+                                </div>
+                                <span class="price-tag">₹{{ appointment.price }}</span>
+                            </div>
+                            <div class="details">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><i class="fas fa-hashtag me-2"></i>Booking ID: {{ appointment.id }}</p>
+                                        <p><i class="fas fa-calendar-alt me-2"></i>Date: {{ appointment.date }}</p>
+                                        <p><i class="fas fa-clock me-2"></i>Time: {{ appointment.time }}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><i class="fas fa-user me-2"></i>Provider: {{ appointment.service_provider }}</p>
+                                        <p>
+                                            <i class="fas fa-info-circle me-2"></i>Status: 
+                                            <span class="badge badge-{{ appointment.status|lower }}">{{ appointment.status }}</span>
+                                        </p>
+                                        {% if appointment.completed_at %}
+                                        <p><i class="fas fa-check-circle me-2"></i>Completed: {{ appointment.completed_at }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex gap-2 mt-3">
+                                    {% if appointment.payment_status == "Extra" %}
+                                    <a href="{% url 'pay_now' appointment.id %}" class="btn btn-success">
+                                        <i class="fas fa-credit-card me-2"></i>Pay Extra (₹{{ appointment.extra_price }})
+                                    </a>
+                                    {% endif %}
+                                    <a href="{% url 'download_invoice' appointment.id %}" class="btn btn-primary">
+                                        <i class="fas fa-file-invoice me-2"></i>Download Invoice
+                                    </a>
+                                    
+                                    
+                                    <!-- From Uiverse.io by SelfMadeSystem --> 
+                                    <div class="rating mt-3" data-service-provider="{{ appointment.service_provider.id }}" style="margin-left: 90px;">
+                                    
+                                        {% for i in "54321" %}
+                                        <input type="radio" id="star-{{ i }}-{{ appointment.id }}" name="star-radio-{{ appointment.id }}" value="{{ i }}"
+                                            {% if appointment.latest_rating == i|add:"0" %}checked{% endif %} onclick="submitRating({{ appointment.service_provider.id }}, {{ i }})">
+                                        <label for="star-{{ i }}-{{ appointment.id }}" data-value="{{ i }}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                <path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path>
+                                            </svg>
+                                        </label>
+                                        {% endfor %}
+                                        <h6>Add Rating:</h6>
+                                    </div>
+                                    
+                                </div>
+                                
+
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-5 empty-state">
+                    <i class="fas fa-calendar-times fa-4x text-muted mb-3"></i>
+                    <p class="h4 text-muted">No bookings found</p>
+                    <a href="#" class="btn btn-primary mt-3">Book a Service</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    function submitRating(serviceProviderId, rating) {
+        fetch("{% url 'submit_rating' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: JSON.stringify({
+                service_provider_id: serviceProviderId,
+                rating: rating
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert("Rating submitted successfully!");
+            } else {
+                alert("Error submitting rating.");
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    }
+</script>
+
+{% endblock %}

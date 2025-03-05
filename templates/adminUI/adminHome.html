@@ -1,0 +1,513 @@
+{% extends "adminUI/admin_base.html" %}
+{% load static %}
+{% block admin  %}
+  
+
+
+<body >
+    
+    <div class="page">
+      
+      <div class="page-wrapper">
+        <!-- Page header -->
+        <div class="page-header d-print-none">
+          <div class="container-xl">
+            <div class="row g-2 align-items-center">
+              <div class="col">
+                
+                <!-- Page pre-title -->
+                <div class="page-pretitle">
+                  Overview
+                </div>
+                <h2 class="page-title">
+                  Dashboard
+                </h2>
+                
+                
+              </div>
+
+
+
+
+              <!-- Page title actions -->
+              <div class="modal modal-blur fade" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Add New SubCategory</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    {% load crispy_forms_tags %}
+                    <div class="modal-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                {{ form|crispy }}
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary mt-3 my-4">Add Category</button>
+                            </div>
+                        </form>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal modal-blur fade" id="modal-report2" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Add New Service</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    {% load crispy_forms_tags %}
+                    <div class="modal-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                {{ form2|crispy }}
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary mt-3 my-4">Add Service</button>
+                            </div>
+                        </form>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal modal-blur fade" id="modal-report3" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Add New SubSubCategory</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    {% load crispy_forms_tags %}
+                    <div class="modal-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                {{ form3|crispy }}
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary mt-3 my-4">Add SubSubCategory</button>
+                            </div>
+                        </form>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+
+
+              <div class="col-auto ms-auto d-print-none">
+                <div class="btn-list">
+                  <span class="d-none d-sm-inline">
+                    <a href="{% url "admin_approvals" %}" class="btn btn-warning">
+                     Service Provider Registrations
+                    </a>
+                  </span>
+                  <span class="d-none d-sm-inline">
+                    
+                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-report2">
+                        Add new Service
+                      </a>
+                  </span>
+                  <span class="d-none d-sm-inline">
+                    
+                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-report">
+                        Add new SubCategory
+                      </a>
+                  </span>
+                  <span class="d-none d-sm-inline">
+                    <a href="" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-report3">
+                      Add new SubSubCategory
+                    </a>
+                  </span>
+                  <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Page body -->
+        <div class="page-body">
+          <div class="container-xl">
+            <div class="row row-deck row-cards">
+              <div class="col-sm-6 col-lg-3">
+
+                <div class="card" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">
+                  <a href=""><div class="card-body" style="display: flex;align-items: center;justify-content:center;">
+                    <div class="row align-items-center" >
+                      <div class="col-auto">
+                        <span class="bg-dark text-white avatar"><!-- Download SVG icon from http://tabler-icons.io/i/currency-dollar -->
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M17 17h-11v-14h-2" /><path d="M6 5l14 1l-1 7h-13" /></svg>
+                        </span>
+                      </div>
+                      <div class="col">
+                        <div class="font-weight-bold">
+                          <span class="text-dark"  style="font-weight: bold;font-size: 20px;">{{total_bookings|last}} Bookings</span>
+                        </div>
+                        <div class="text-muted">
+                          <span style="font-size: 17px;">This Month</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div></a>
+                </div>
+
+              </div>
+              <div class="col-sm-6 col-lg-3">
+                <div class="card" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">
+                  <div class="card-body" style="display: flex;align-items: center;justify-content:center;">
+                    <div class="row align-items-center" >
+                      <div class="col-auto">
+                        <span class="bg-dark text-white avatar"><!-- Download SVG icon from http://tabler-icons.io/i/currency-dollar -->
+                          <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-databricks"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 17l9 5l9 -5v-3l-9 5l-9 -5v-3l9 5l9 -5v-3l-9 5l-9 -5l9 -5l5.418 3.01" /></svg>
+                        </span>
+                      </div>
+                      <div class="col">
+                        <div class="font-weight-bold">
+                          <span style="font-weight: bold;font-size: 20px;">{{services_count}}</span>
+                        </div>
+                        <a href=""><div class="text-muted">
+                          <span style="font-size: 17px;">Services Listed</span>
+                        </div></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-lg-3">
+                <div class="card" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);"><a href="{% url "customers" %}">
+                  <div class="card-body" style="display: flex;align-items: center;justify-content:center;">
+                    <div class="row align-items-center" >
+                      <div class="col-auto">
+                        <span class="bg-dark text-white avatar"><!-- Download SVG icon from http://tabler-icons.io/i/currency-dollar -->
+                          <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-users"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /><path d="M21 21v-2a4 4 0 0 0 -3 -3.85" /></svg>
+                        </span>
+                      </div>
+                      <div class="col">
+                        <div class="font-weight-bold">
+                          <span  class="text-dark" style="font-weight: bold;font-size: 20px;">{{customers}}</span>
+                        </div>
+                        <div class="text-muted">
+                          <span style="font-size: 17px;">Registered Customers</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div></a>
+              </div>
+              <div class="col-sm-6 col-lg-3">
+                <div class="card" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);"><a href="{% url "service_providers" %}">
+                  <div class="card-body" style="display: flex;align-items: center;justify-content:center;">
+                    <div class="row align-items-center" >
+                      <div class="col-auto">
+                        <span class="bg-dark text-white avatar"><!-- Download SVG icon from http://tabler-icons.io/i/currency-dollar -->
+<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-user-star"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h.5" /><path d="M17.8 20.817l-2.172 1.138a.392 .392 0 0 1 -.568 -.41l.415 -2.411l-1.757 -1.707a.389 .389 0 0 1 .217 -.665l2.428 -.352l1.086 -2.193a.392 .392 0 0 1 .702 0l1.086 2.193l2.428 .352a.39 .39 0 0 1 .217 .665l-1.757 1.707l.414 2.41a.39 .39 0 0 1 -.567 .411l-2.172 -1.138z" /></svg>                        </span>
+                      </div>
+                      <div class="col">
+                        <div class="font-weight-bold">
+                          <span class="text-dark" style="font-weight: bold;font-size: 20px;">{{service_providers}}</span>
+                        </div>
+                        <div class="text-muted">
+                          <span style="font-size: 17px;">Registered Service Providers</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div></a>
+                </div>
+              </div>
+
+                <div class="col-lg-6">
+                <div class="card">
+                  <div class="card-body">
+                    <h1 class="card-title" style="font-size: 40px;margin-top: 40px;margin-left: 190px;">Total Bookings</h1>
+                    <br><br><br><br><br>
+                    <div id="chart-mentions" class="chart-lg"></div>
+                  </div>
+                </div>
+              </div> 
+
+               <div class="col-md-6 col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">MOST BOOKED SERVICES</h3>
+                    </div>
+                    <table class="table card-table table-vcenter" style="margin-top: 3px;">
+                        <thead>
+                            <tr>
+                                <th>Service</th>
+                                <th>Total Bookings</th>
+                                <th colspan="2">Percentage of Total Booking</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for sub in top_subcategories %}
+                            <tr>
+                                <td><strong>{{sub.name}}</strong></td>
+                                <td>{{sub.appointment_count}}</td>
+                                <td></td>
+                                <td class="w-50">
+                                    <div class="progress progress-xs">
+                                        <div class="progress-bar bg-dark" style="width:{{sub.percentage}}%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div> 
+
+             <div class="col-lg-12">
+              <div class="card">
+                <div class="card-body">
+                  <h1 class="card-title" style="font-size: 40px;margin-top: 40px;margin-left: 500px;">Total Sales</h1>
+                  
+                  <br><br><br><br><br>
+                  <div id="chart-development-activity" class="chart-lg"></div>
+                </div>
+              </div>
+            </div> 
+             
+            <div class="container-fluid" style="margin-top: 10px;">
+
+              <!-- DataTales Example -->
+              <div class="card shadow mb-4">
+                  <div class="card-header py-3">
+                      <h2 class="m-0 font-weight-bold">Recent Orders</h2>
+                  </div>
+                  <div class="card-body">
+                      <div class="table-responsive">
+                          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+                              <thead>
+                                  <tr>
+                                      <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd; background-color: #f2f2f2;">Order Id</th>
+                                      <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd; background-color: #f2f2f2;">Customer</th>
+                                      <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd; background-color: #f2f2f2;">Total Amount</th>
+                                      <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd; background-color: #f2f2f2;">Address</th>
+                                      <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd; background-color: #f2f2f2;">Service Provider</th>
+                                      <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd; background-color: #f2f2f2;">Appointment Time</th>
+                                      <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd; background-color: #f2f2f2;">Appointment Status</th>
+                                      <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd; background-color: #f2f2f2;">Payment Status</th>
+                                      <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd; background-color: #f2f2f2;">Completed At</th>
+                                  </tr>
+                              </thead>
+                              
+                              <tbody>
+                                  {% for booking in recent_bookings %}
+                                  <tr>
+                                      <td style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">{{ booking.id }}</td>
+                                      <td style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">{{ booking.customer.fname }}</td>
+                
+                                      <td style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">{{ booking.price }}</td>
+                                      <td style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">{{ booking.customer.address }}</td>
+                                      <td style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">{{ booking.service_provider }}</td>
+                                      <td style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">{{ booking.time }}</td>
+                                      <td style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;
+    {% if booking.status == 'Pending' %} background-color: orange; color: white;
+    {% elif booking.status == 'Accepted' %} background-color: blue; color: white;
+    {% elif booking.status == 'Declined' %} background-color: red; color: white;
+    {% elif booking.status == 'In Progress' %} background-color: blue; color: white;
+    {% elif booking.status == 'Completed' %} background-color: green; color: white;
+    {% elif booking.status == 'Cancelled' %} background-color: red; color: white;
+    {% endif %}">
+    {{ booking.status }}
+</td>
+
+<td style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;
+{% if booking.payment_status == 'Payment Pending' %} background-color: orange; color: white;
+{% elif booking.payment_status == 'Extra' %} background-color: purple; color: white;
+{% elif booking.payment_status == 'Paid' %} background-color: green; color: white;
+{% endif %}">
+{{ booking.payment_status }}
+</td>
+
+                                      <td style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">{{ booking.completed_at }}</td>
+                                  </tr>
+                                  {% endfor %}
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Libs JS -->
+  
+    <script>
+      // @formatter:off
+      document.addEventListener("DOMContentLoaded", function () {
+          window.ApexCharts && (new ApexCharts(document.getElementById('chart-mentions'), {
+              chart: {
+                  type: "bar",
+                  fontFamily: 'inherit',
+                  height: 240,
+                  parentHeightOffset: 0,
+                  toolbar: {
+                      show: false,
+                  },
+                  animations: {
+                      enabled: false
+                  },
+                  stacked: true,
+              },
+              plotOptions: {
+                  bar: {
+                      columnWidth: '50%',
+                  }
+              },
+              dataLabels: {
+                  enabled: false,
+              },
+              fill: {
+                  opacity: 1,
+              },
+              series: [{
+                  name: "Total Bookings",
+                  data: {{ total_bookings|safe }}
+              }],
+              tooltip: {
+                  theme: 'dark'
+              },
+              grid: {
+                  padding: {
+                      top: -20,
+                      right: 0,
+                      left: -4,
+                      bottom: -4
+                  },
+                  strokeDashArray: 4,
+                  xaxis: {
+                      lines: {
+                          show: true
+                      }
+                  },
+              },
+              xaxis: {
+                  labels: {
+                      padding: 0,
+                  },
+                  tooltip: {
+                      enabled: false
+                  },
+                  axisBorder: {
+                      show: false,
+                  },
+                  type: 'category',
+                  categories: {{ month|safe }},
+              },
+              yaxis: {
+                  labels: {
+                      padding: 4
+                  },
+              },
+              colors: [tabler.getColor("blue"), tabler.getColor("primary", 0.8), tabler.getColor("green", 0.8)],
+              legend: {
+                  show: false,
+              },
+          })).render();
+      });
+      // @formatter:on
+  </script>
+  <script>
+    // @formatter:off
+    document.addEventListener("DOMContentLoaded", function () {
+        window.ApexCharts && (new ApexCharts(document.getElementById('chart-development-activity'), {
+            chart: {
+                type: "area",
+                fontFamily: 'inherit',
+                height: 240,
+                parentHeightOffset: 0,
+                toolbar: {
+                    show: false,
+                },
+                animations: {
+                    enabled: false
+                },
+                stacked: true,
+            },
+            plotOptions: {
+                bar: {
+                    columnWidth: '50%',
+                }
+            },
+            dataLabels: {
+                enabled: false,
+            },
+            fill: {
+                opacity: 1,
+            },
+            series: [{
+                name: "Total Sales: Rs.",
+                data:{{ total_revenue|safe }}
+            }],
+            tooltip: {
+                theme: 'dark'
+            },
+            grid: {
+                padding: {
+                    top: -20,
+                    right: 0,
+                    left: -4,
+                    bottom: -4
+                },
+                strokeDashArray: 4,
+                xaxis: {
+                    lines: {
+                        show: true
+                    }
+                },
+            },
+            xaxis: {
+                labels: {
+                    padding: 0,
+                },
+                tooltip: {
+                    enabled: false
+                },
+                axisBorder: {
+                    show: false,
+                },
+                type: 'category',
+                categories: {{ month|safe }},
+            },
+            yaxis: {
+                labels: {
+                    padding: 4
+                },
+            },
+            colors: [tabler.getColor("blue"), tabler.getColor("primary", 0.8), tabler.getColor("green", 0.8)],
+            legend: {
+                show: false,
+            },
+        })).render();
+    });
+    // @formatter:on
+</script>
+
+
+  </body>d
+
+
+
+
+{% endblock %}

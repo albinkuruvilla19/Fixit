@@ -1,0 +1,29 @@
+<section class="hero">
+    <h2>Your One-Stop Solution for All Home Needs</h2>
+    <p>Book trusted professionals for home cleaning, repairs, and more!</p>
+</section>
+<section class="services">
+    <h2>Our Services</h2>
+    {% for service in services %}
+    <div class="service-card">
+        <h3><a href="#">{{service.name}}</a></h3>
+        <p>Get professional salon services at the comfort of your home.</p>
+    </div>
+    {% endfor %}
+    <div class="service-card">
+        <h3>Appliance Repair</h3>
+        <p>We repair all major appliances including AC, fridge, and washing machines.</p>
+    </div>
+    <div class="service-card">
+        <h3>Electronics Repair</h3>
+        <p>Expert solutions for laptops, CCTV, and more.</p>
+    </div>
+    <div class="service-card">
+        <h3>Plumber</h3>
+        <p>Quick and reliable plumbing services for your home.</p>
+    </div>
+    <div class="service-card">
+        <h3>House Cleaning</h3>
+        <p>Deep cleaning services for bathrooms, kitchens, and more.</p>
+    </div>
+</section>

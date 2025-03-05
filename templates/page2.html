@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+    <section class="professional_section layout_padding" style="padding: 30px 0; height: 400px; display: flex; align-items: center;">
+        <div class="container" style="height: 100%;">
+          <div class="row align-items-center" style="height: 100%;">
+            <div class="col-md-6">
+              <div class="img-box" style="height: 200px; display: flex; justify-content: center; align-items: center;margin-top: 80px;">
+                <img src="{% static 'images/professional-img.png' %}" alt="" style="height: 500px;width: 450px;">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="detail-box" style="text-align: left;">
+                <h2 style="font-size: 24px; line-height: 1.5; margin-bottom: 20px;">
+                    {{ service.name }}
+                </h2>
+                <p style="font-size: 14px; line-height: 1.6; margin-bottom: 20px;">
+                    {{ service.description }}
+                </p>
+                <a href="" style="color: white; background-color: #007bff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-size: 14px;">
+                  Read More
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      </div>
+      <section class="service_section layout_padding" >
+        <div class="container" style="padding-top: 60px;">
+          <div class="row">
+            {% for subcategory in subcategories %}
+            <div class="col-sm-6 col-md-6 mx-auto">
+              <div class="box ">
+                <div class="img-box">
+                  <img src="{% static 'images/s1.png' %}" alt="" />
+                </div>
+                <div class="detail-box">
+                  <h4>
+                      <a href="{% url 'subcategory_detail' subcategory.pk %}">{{ subcategory.name }}</a>
+                  </h4>
+                  <p>
+                    <!-- description -->
+                  </p>
+                  <a href="{% url 'subcategory_detail' subcategory.pk %}"><button class="btn btn-primary mt-3">Book now</button></a>
+                </div>
+              </div>
+            </div>{% endfor %}
+          </div>
+
+        </div>
+      </section>
+      {% endblock content %}

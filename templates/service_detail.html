@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ service.name }}</title>
+    <style>
+        .question-container {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        .answered-question {
+            background: #e0ffe0;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ service.name }}</h1>
+    <p>{{ service.description }}</p>
+
+    <h2>Subcategories</h2>
+    <ul>
+        {% for subcategory in subcategories %}
+        <li>
+            <strong>{{ subcategory.name }}</strong>
+            <p>{{ subcategory.description }}</p>
+            <!-- Link to subcategory detail page -->
+            <a href="{% url 'subcategory_detail' subcategory.pk %}">
+                <button>Book Now</button>
+            </a>
+            
+        </li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'index' %}">Back to Services</a>
+
+</body>
+</html>

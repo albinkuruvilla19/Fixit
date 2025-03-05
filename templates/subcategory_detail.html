@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+    <section class="professional_section layout_padding" style="padding: 30px 0; height: 400px; display: flex; align-items: center;">
+        <div class="container" style="height: 100%;">
+          <div class="row align-items-center" style="height: 100%;">
+            <div class="col-md-6">
+              <div class="img-box" style="height: 200px; display: flex; justify-content: center; align-items: center;margin-top: 80px;">
+                <img src="{% static 'images/professional-img.png' %}" alt="" style="height: 500px;width: 450px;">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="detail-box" style="text-align: left;">
+                <h2 style="font-size: 36px; line-height: 1.5; margin-bottom: 20px;">
+                    {{ subcategory.name }}
+                </h2>
+                <p style="font-size: 14px; line-height: 1.6; margin-bottom: 20px;">
+                    
+                </p>
+                <a href="{% url 'book_now' subcategory.id %}" style="color: white; background-color: #007bff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-size: 14px;">
+                  Book Now
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      </div>
+      <h1></h1>
+      <br><br><br>
+      <div class="container">
+        <p>{{ subcategory.description | safe }}</p>
+      
+      </div>
+      
+      
+{% endblock %}

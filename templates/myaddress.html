@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .nav-pills {
+            transition: all 0.3s ease;
+            border-radius: 15px;
+            background: #f8f9fa;
+            padding: 0.5rem;
+        }
+        
+        .nav-link {
+            transition: all 0.3s ease;
+            border-radius: 12px !important;
+            padding: 1rem 1.5rem;
+            color: #4a5568;
+        }
+        
+        .nav-link.active {
+            background: #3b82f6 !important;
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .address-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .address-header {
+            background: #3b82f6;
+            color: white;
+            padding: 1.5rem;
+            font-weight: 600;
+        }
+
+        .form-container {
+            padding: 2rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .address-tips {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 1px solid #e5e7eb;
+        }
+
+        .tip-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+
+        .tip-item i {
+            margin-right: 0.5rem;
+            color: #3b82f6;
+        }
+
+        .btn-save {
+            background: #3b82f6;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            border: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .btn-save:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+        }
+
+        .location-input-group {
+            position: relative;
+        }
+
+        .location-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        .alert {
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .invalid-feedback {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .input-group-text {
+            border-radius: 10px 0 0 10px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-right: none;
+        }
+
+        .input-group .form-control {
+            border-radius: 0 10px 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <!-- Modern Navigation Pills -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="nav nav-pills nav-fill">
+                    <a class="nav-link" href="{% url "customer_bookings" %}">
+                        <i class="fas fa-calendar-check me-2"></i>My Bookings
+                    </a>
+                    <a class="nav-link" href="{% url "edit_profile" %}">
+                        <i class="fas fa-user-edit me-2"></i>Edit Profile
+                    </a>
+                    <a class="nav-link" href="{% url "change_password" %}">
+                        <i class="fas fa-key me-2"></i>Change Password
+                    </a>
+                    <a class="nav-link active" href="{% url "edit_address" %}">
+                        <i class="fas fa-map-marker-alt me-2"></i>My Address
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Address Form -->
+        <div class="row">
+            <div class="col-12">
+                <div class="address-card">
+                    <div class="address-header d-flex align-items-center">
+                        <i class="fas fa-location-dot fa-2x me-3"></i>
+                        <h3 class="mb-0">Edit Your Address</h3>
+                    </div>
+                    <div class="form-container">
+                        {% if messages %}
+                            {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                        
+                        <form method="post" class="needs-validation">
+                            {% csrf_token %}
+                            {% load crispy_forms_tags %}
+                            
+                            <!-- Add icon prefixes to common address fields -->
+                            {{ form|crispy }}
+
+                            <div class="address-tips">
+                                <h5 class="mb-3">Address Tips</h5>
+                                <div class="tip-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    Include apartment/suite/floor number if applicable
+                                </div>
+                                <div class="tip-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    Use complete street address with landmarks
+                                </div>
+                                <div class="tip-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    Double-check your postal code
+                                </div>
+                                <div class="tip-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    Add delivery instructions if needed
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn-save">
+                                    <i class="fas fa-save me-2"></i>Save Address
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+    <section class="professional_section layout_padding" style="padding: 30px 0; height: 400px; display: flex; align-items: center;">
+        <div class="container" style="height: 100%;">
+          <div class="row align-items-center" style="height: 100%;">
+            <div class="col-md-6">
+              <div class="img-box" style="height: 200px; display: flex; justify-content: center; align-items: center;margin-top: 80px;">
+                <img src="{% static 'images/professional-img.png' %}" alt="" style="height: 500px;width: 450px;">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="detail-box" style="text-align: left;">
+                <h2 style="font-size: 36px; line-height: 1.5; margin-bottom: 20px;">
+                    {{ subcategory.name }}
+                </h2>
+                <p style="font-size: 14px; line-height: 1.6; margin-bottom: 20px;">
+                    
+                </p>
+                <a href="{% url 'book_now' subcategory.id %}" style="color: white; background-color: #007bff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-size: 14px;">
+                  Book Now
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      </div>
+      <h1></h1>
+      <br><br><br>
+      <div class="container">
+{% if error %}
+<div style="color: red;">{{ error }}</div>
+{% endif %}
+
+
+<form method="post" style="max-width: 1000px; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; font-family: Arial, sans-serif;">
+    {% csrf_token %}
+    <div style="margin-bottom: 15px;">
+      <label for="subsubcategory" style="display: block; margin-bottom: 5px; font-weight: bold;">What you need?</label>
+      <select id="subsubcategory" name="subsubcategory" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+          <option value="">Select from the list</option>
+          {% for subsubcategory in subsubcategories %}
+              <option value="{{ subsubcategory.id }}">{{ subsubcategory.name }}</option>
+          {% endfor %}
+      </select>
+    </div>
+    <div style="margin-bottom: 15px;">
+        <label for="date" style="display: block; margin-bottom: 5px; font-weight: bold;">Date:</label>
+        <input type="date" id="date" name="date" min="{{ today }}" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+    </div>
+    <div style="margin-bottom: 15px;">
+        <label for="time" style="display: block; margin-bottom: 5px; font-weight: bold;">Time:</label>
+        <select id="time" name="time" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+            <option value="">Select a time slot</option>
+            {% for slot in time_slots %}
+                <option value="{{ slot }}:00">{{ slot }}:00</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    {% for question in booking_questions %}
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">{{ question.question_text }}</label>
+            {% if question.has_options %}
+                <select name="question_{{ question.id }}" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                    <option value="">Select an option</option>
+                    {% for option in question.options.all %}
+                        <option value="{{ option.option_text }}">{{ option.option_text }}</option>
+                    {% endfor %}
+                </select>
+            {% else %}
+                <textarea name="question_{{ question.id }}" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; resize: vertical;"></textarea>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary"  style="width: 100%; padding: 10px;  color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer;">
+        Submit
+    </button>
+</form>
+
+
+      </div>
+      
+      
+      </body>
+      
+    </html>
+
+
+
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const dateInput = document.getElementById("date");
+        const timeSelect = document.getElementById("time");
+    
+        dateInput.addEventListener("change", function () {
+          const selectedDate = dateInput.value;
+    
+          if (selectedDate) {
+            fetch(`/get-time-slots/?date=${selectedDate}`)
+              .then((response) => response.json())
+              .then((data) => {
+                timeSelect.innerHTML = '<option value="">Select a time slot</option>';
+                if (data.time_slots) {
+                  data.time_slots.forEach((slot) => {
+                    const option = document.createElement("option");
+                    option.value = slot;
+                    option.textContent = `${slot}:00`;
+                    timeSelect.appendChild(option);
+                  });
+                } else if (data.error) {
+                  alert(data.error);
+                }
+              })
+              .catch((error) => {
+                console.error("Error fetching time slots:", error);
+                alert("Could not fetch time slots. Please try again.");
+              });
+          }
+        });
+      });
+    </script>
+    {% endblock %}

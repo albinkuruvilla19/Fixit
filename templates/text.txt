@@ -1,0 +1,3 @@
+<h1>{{ subcategory.name }}</h1>
+<p>{{ subcategory.description }}</p>
+<a href="{% url 'book_now' subcategory.id %}">Book Now</a>

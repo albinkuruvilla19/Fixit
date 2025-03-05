@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Services</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .auth-buttons a {
+            text-decoration: none;
+            background-color: white;
+            color: #4CAF50;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            border: 1px solid #4CAF50;
+            transition: 0.3s;
+        }
+        .auth-buttons a:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #333;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: block;
+        }
+        nav a:hover {
+            background-color: #575757;
+        }
+        .hero {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 50px 20px;
+        }
+        .hero h2 {
+            font-size: 36px;
+            margin: 0;
+        }
+        .hero p {
+            font-size: 18px;
+            margin: 10px 0 0;
+        }
+        .services {
+            padding: 20px;
+            text-align: center;
+        }
+        .services h2 {
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        .service-card {
+            display: inline-block;
+            width: 250px;
+            margin: 10px;
+            padding: 15px;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+        .service-card h3 {
+            margin: 10px 0;
+            font-size: 20px;
+            color: #4CAF50;
+        }
+        .service-card p {
+            font-size: 14px;
+            color: #555;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Home Services</h1>
+        <div class="auth-buttons">
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'customer_login' %}">Login</a>
+                <a href="{% url 'customer_signup' %}">Register</a>
+                <a href="{% url 'seller_signup' %}">Register as Service Provider</a>
+            {% endif %}
+        </div>
+    </header>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Services</a>
+        <a href="#">About Us</a>
+        <a href="#">Contact</a>
+    </nav>
+    <section class="hero">
+        <h2>Your One-Stop Solution for All Home Needs</h2>
+        <p>Book trusted professionals for home cleaning, repairs, and more!</p>
+    </section>
+    <section class="services">
+        <h2>Our Services</h2>
+        {% for service in services %}
+        <div class="service-card">
+            <h3><a href="{% url 'service_detail' service.id %}">{{service.name}}</a></h3>
+            <p>Get professional salon services at the comfort of your home.</p>
+        </div>
+        {% endfor %}
+        <div class="service-card">
+            <h3>Appliance Repair</h3>
+            <p>We repair all major appliances including AC, fridge, and washing machines.</p>
+        </div>
+        <div class="service-card">
+            <h3>Electronics Repair</h3>
+            <p>Expert solutions for laptops, CCTV, and more.</p>
+        </div>
+        <div class="service-card">
+            <h3>Plumber</h3>
+            <p>Quick and reliable plumbing services for your home.</p>
+        </div>
+        <div class="service-card">
+            <h3>House Cleaning</h3>
+            <p>Deep cleaning services for bathrooms, kitchens, and more.</p>
+        </div>
+    </section>
+    <footer>
+        <p>&copy; 2025 Home Services. All rights reserved.</p>
+    </footer>
+</body>
+</html>

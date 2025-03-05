@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Add Extra Pay</h2>
+    <p>Appointment with {{ work.customer.user.username }} - Phone: {{ work.customer.phone }}</p>
+    <p>{{ work.date }} at {{ work.time }}</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            
+            <label for="extraPayAmount" class="form-label">Extra Amount</label>
+            <input type="number" name="extra_pay" class="form-control" id="extraPayAmount" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+    </form>
+
+    <a href="{% url 'sp_dashboard' %}" class="btn btn-secondary mt-3">Back to Pending Works</a>
+</div>
+{% endblock %}

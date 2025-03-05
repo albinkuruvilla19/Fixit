@@ -1,0 +1,51 @@
+{% load static crispy_forms_tags %}
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+    <script>
+        function initAutocomplete() {
+            const addressInput = document.getElementById("id_address");
+            const autocomplete = new google.maps.places.Autocomplete(addressInput);
+
+            autocomplete.addListener("place_changed", function () {
+                const place = autocomplete.getPlace();
+                document.getElementById("id_latitude").value = place.geometry.location.lat();
+                document.getElementById("id_longitude").value = place.geometry.location.lng();
+            });
+        }
+    </script>
+</head>
+
+<body onload="initAutocomplete()">
+    <section class="vh-100">
+        <div class="container-fluid h-custom">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                    <form method="post" style="background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); padding: 30px;">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        
+                        <!-- Location Fields -->
+                       
+
+                        <div class="text-center text-lg-start mt-4 pt-2">
+                            <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                            <p class="small fw-bold mt-2 pt-1 mb-0">Already have an account? 
+                                <a href="{% url 'customer_login' %}" class="link-danger">Login</a>
+                            </p>
+                            <p class="small fw-bold mt-2 pt-1 mb-0">Need to register as a Service Provider?
+                                <a href="{% url 'seller_signup' %}" class="link-danger">Register as Service Provider</a>
+                            </p>
+
+                        </div>
+                        
+                        {% if error_message %}
+                        <p style="color: red; margin-top: 10px;">{{ error_message }}</p>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
